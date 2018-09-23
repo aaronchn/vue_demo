@@ -4,6 +4,7 @@
       <div class="col-sm-10">
         <h1>Books</h1>
         <hr><br><br>
+        <alert :message="message" v-if="showMessage"></alert>
         <button type="button" class="btn btn-success btn-sm" v-b-modal.book-modal>Add Book</button>
         <br><br>
         <table class="table table-hover">
@@ -71,8 +72,12 @@
 
 <script>
 import axios from 'axios';
+import Alert from './Alert';
 
 export default {
+  components: {
+    alert: Alert,
+  },
   data() {
     return {
       books: [],
@@ -81,6 +86,8 @@ export default {
         author: '',
         read: [],
       },
+      message: '',
+      showMessage: false,
     };
   },
   methods: {
@@ -100,6 +107,8 @@ export default {
       axios.post(path, payload)
         .then(() => {
           this.getBooks();
+          this.message = '添加成功！';
+          this.showMessage = true;
         })
         .catch((error) => {
           // eslint-disable-next-line
